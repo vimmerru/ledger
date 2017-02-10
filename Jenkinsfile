@@ -1,24 +1,30 @@
 echo 'Ledger build...'
 
-docker.image('python:3.5.3').inside {
+node {
 
-    stage('Checkout') {
-        echo 'Check csm...'
+    stage('Checkout csm') {
+        echo 'Checkout csm...'
         checkout scm
-        echo 'Check csm: done'
+        echo 'Checkout csm: done'
     }
 
-    stage('Install deps') {
-        echo 'Install deps...'
-        sh 'python setup.py install' 
-        echo 'Install deps: done'
+    docker.image('python:3.5.3').inside {
+
+        stage('Install deps') {
+            echo 'Install deps...'
+            sh 'sudo python setup.py install' 
+            echo 'Install deps: done'
+        }
+        
+        stage('Test') {
+            echo 'Testing...'
+            sh 'python setup.py pytest' 
+            echo 'Testesting: done'
+        }
     }
-    
-    stage('Test') {
-        echo 'Testing...'
-        sh 'python setup.py pytest' 
-        echo 'Testesting: done'
-    }
+
+    // Clean up workspace
+    step([$class: 'WsCleanup'])
 }
 
 
