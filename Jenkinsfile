@@ -1,24 +1,23 @@
 echo 'Ledger build...'
 
 node {
-    stage('Build') {
-        echo 'Build state...'
-        
-        echo 'Check csm...'
-        checkout scm
-        echo 'Check csm: done'
 
-        echo 'Build state: done'
-    }
-    
-    stage('Test') {
-        echo 'Test state...'
-        echo 'Test state: done'
-    }
-    
-    stage('Deploy') {
-        echo 'Deploy state'
-        echo 'Deploy state'
+    echo 'Check csm...'
+    checkout scm
+    echo 'Check csm: done'
+
+    docker.image('python:3.5.3').inside {
+        stage('Install deps') {
+           echo 'Install deps...'
+           sh 'python setup.py install' 
+           echo 'Install deps: done'
+        }
+        
+        stage('Test') {
+           echo 'Testing...'
+           sh 'python setup.py pytest' 
+           echo 'Testesting: done'
+        }
     }
 
     echo 'Cleanup workspace'
