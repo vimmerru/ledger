@@ -13,7 +13,8 @@ node {
         stage('Install deps') {
             echo 'Install deps...'
             sh 'ls' 
-            sh 'mkvirtualenv ledger'            
+            sh 'virtualenv .'            
+            sh 'source /bin/activate'            
             sh 'workon ledger'
             sh 'python setup.py install' 
             echo 'Install deps: done'
