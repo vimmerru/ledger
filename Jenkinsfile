@@ -12,7 +12,7 @@ node {
 
         stage('Install deps') {
             echo 'Install deps...'
-            sh 'sudo python setup.py install' 
+            sh 'python setup.py install' 
             echo 'Install deps: done'
         }
         
