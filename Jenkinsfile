@@ -13,7 +13,9 @@ node {
         stage('Install deps') {
             echo 'Install deps...'
             sh 'ls' 
-            //sh 'python setup.py install' 
+            sh 'mkvirtualenv ledger'            
+            sh 'workon ledger'
+            sh 'python setup.py install' 
             echo 'Install deps: done'
         }
         
@@ -24,8 +26,11 @@ node {
         }
     }
 
-    // Clean up workspace
-    step([$class: 'WsCleanup'])
+    stage('Cleanup') {
+        echo 'Cleanup workspace...'
+        step([$class: 'WsCleanup'])
+        echo 'Cleanup workspace: done'
+    }
 }
 
 
